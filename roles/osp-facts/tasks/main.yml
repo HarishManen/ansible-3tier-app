@@ -1,0 +1,12 @@
+---
+# tasks file for osp-facts
+   - name: Fetch Instance Info
+     os_server_facts:
+      cloud: "{{ cloud_name }}"
+      region_name: RegionOne
+     register: result
+   - name: Add hosts part of the required groups
+     add_host:
+       name: "{{ item.public_v4 }}"
+       group: "{{ item.metadata.group }}"
+     with_items: "{{result.ansible_facts.openstack_servers}}"

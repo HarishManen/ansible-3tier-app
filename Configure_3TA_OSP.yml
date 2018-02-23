@@ -1,0 +1,41 @@
+---
+
+- name: Deploy 3-tier apps on top of the OSP infrastructure
+  hosts: jumpbox
+#  become: yes
+  roles:
+    - {name: osp-facts, tags: osp-facts}
+
+# Setup database tier
+- name: Deploy PostgreSQL server
+  become: true
+  hosts: appdbs
+  gather_facts: false # remove later! speeds up testing
+  roles:
+    - {name: base-config, tags: base-config}
+    - {name: db-tier, tags: [db-tier, dbs, PostgreSQL]}
+
+# Setup application tier
+- name: Deploy application servers
+  become: true
+  hosts: apps
+  gather_facts: false # remove later! speeds up testing
+  roles:
+    - {name: base-config, tags: base-config}
+    - {name: app-tier, tags: [app-tier, apps, Tomcat]}
+
+# Setup load balancer tier
+- name: Deploy load balancer servers
+  become: true
+  hosts: frontends
+  gather_facts: false # remove later! speeds up testing
+  roles:
+    - {name: base-config, tags: base-config}
+    - {name: lb-tier, tags: [lb-tier, lbs, HAProxy]}
+
+- name: Wait 60 seconds for port 80 to become open on the frontends
+  wait_for:
+    port: 80
+    host: frontends
+
+...

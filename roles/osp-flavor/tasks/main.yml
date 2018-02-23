@@ -1,0 +1,11 @@
+---
+# tasks file for roles/osp-flavor
+ - name: Create/Delete m2.small flavor
+   os_nova_flavor:
+     cloud: "{{ cloud_name }}"
+     state: "{{ item.value.state }}"
+     name: "{{ item.key }}"
+     ram: "{{ item.value.ram }}"
+     vcpus: "{{ item.value.vcpus }}"
+     disk: "{{ item.value.disk }}"
+   with_dict: "{{ osp_flavors }}"

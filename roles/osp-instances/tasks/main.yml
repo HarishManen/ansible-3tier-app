@@ -1,0 +1,7 @@
+---
+
+  - include_tasks: instance.yml
+    with_items:
+      - "{{ osp_servers }}"
+
+...

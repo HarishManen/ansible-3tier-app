@@ -1,0 +1,48 @@
+---
+
+- name: Create/Delete a server instance
+  os_server:
+    cloud: "{{ cloud_name }}"
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    image: rhel-guest
+    meta: "group={{ item.group }},deployment_name={{ item.deployment }}"
+    flavor: m2.small
+    security_groups: "{{ item.security_group_name }}"
+    key_name: ansible_ssh
+    delete_fip: true
+    wait: yes
+    nics:
+      - net-name: "{{ item.int_network }}"
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+  register: instanceip
+- name: "Add floating IP to instance {{ instanceip.server.name }}"
+  os_floating_ip:
+    cloud: "{{ cloud_name }}"
+    state: present
+    reuse: yes
+    server: "{{ item.name }}"
+    network: "{{ item.ext_network }}"
+    wait: true
+    timeout: 180
+  when: instanceip.server is defined
+  register: instancefloatingip
+- name: Show instance public IP
+  debug:
+    msg: "Instance {{ instanceip.server.name }} has public IP: {{ instancefloatingip.floating_ip.floating_ip_address }}"
+  when: instancefloatingip.floating_ip is defined
+- name: "Wait for instance {{ instanceip.server.name }} to be available"
+  wait_for:
+    host: "{{ instancefloatingip.floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
+  when: instancefloatingip.floating_ip is defined
+
+...
