@@ -21,6 +21,12 @@
       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
   register: instanceip
+- name: "Start instance {{ instanceip.server.name }} if it is shutdown"
+  os_server_action:
+    cloud: "{{ cloud_name }}"
+    action: start
+    server: "{{ instanceip.server.name }}"
+  when: instanceip.server.status == "SHUTOFF"
 - name: "Add floating IP to instance {{ instanceip.server.name }}"
   os_floating_ip:
     cloud: "{{ cloud_name }}"
