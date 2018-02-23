@@ -33,9 +33,15 @@
     - {name: base-config, tags: base-config}
     - {name: lb-tier, tags: [lb-tier, lbs, HAProxy]}
 
-- name: Wait 60 seconds for port 80 to become open on the frontends
-  wait_for:
-    port: 80
-    host: frontends
+# Check that a page returns a status 200 and fail if the word Ansible is not
+# in the page contents.
+- uri:
+    url: http://frontend1.e327.example.opentlc.com
+    return_content: yes
+  register: webpage
+
+- name: Fail if Ansible is not in the page content
+  fail:
+  when: "'Ansible' not in webpage.content"
 
 ...
