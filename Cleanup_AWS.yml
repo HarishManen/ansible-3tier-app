@@ -1,0 +1,10 @@
+---
+- name: Remove OSP instances for the 3-tier app playbook
+  hosts: jumpbox
+  gather_facts: false
+  vars_files:
+    - vars/osp_cleanup_vars.yml
+  roles:
+    - {name: osp-instances, tags: osp-vms}
+    - {name: osp-flavor, tags: osp-flavors}
+...
