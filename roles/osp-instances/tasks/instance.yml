@@ -26,7 +26,7 @@
     cloud: "{{ cloud_name }}"
     action: start
     server: "{{ instanceip.server.name }}"
-  when: instanceip.server is define and instanceip.server.status == "SHUTOFF"
+  when: instanceip.server is defined and instanceip.server.status == "SHUTOFF"
 - name: "Add floating IP to instance {{ instanceip.server.name }}"
   os_floating_ip:
     cloud: "{{ cloud_name }}"
