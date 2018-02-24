@@ -2,32 +2,7 @@
 
 - name: Provision AWS infrastructure for the 3-tier app playbook
   hosts: bastion
-  tasks:
-  - name: Create bin directory
-    file:
-      path: ~/bin
-      state: directory
-      mode: 0755
-  - name: copy common.sh script
-    copy:
-      src: "{{ role_path }}/files/common.sh"
-      dest: ~/bin/common.sh
-      mode: 0755
-  - name: copy order_svc.sh script
-    copy:
-      src: "{{ role_path }}/files/order_svc.sh"
-      dest: ~/bin/order_svc.sh
-      mode: 0755
-  - name: copy jq script
-    copy:
-      src: "{{ role_path }}/files/jq"
-      dest: ~/bin/jq
-      mode: 0644
-  - name: copy credentials file
-    template:
-      src: credentials.j2
-      dest: ~/credentials.rc
-      mode: 0644
-  - name: Execute order_svc.sh script to create AWS infrastructure for 3 Tier Application
-    command: echo "source ~/credentials.rc ; ~/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y"
+  roles:
+    - {name: aws-instances, tags: aws-ec2}
+
 ...
