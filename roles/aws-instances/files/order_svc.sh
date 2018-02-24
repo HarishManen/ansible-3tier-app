@@ -51,7 +51,7 @@ get_token
 catalogID=$(curl -s -H "X-Auth-Token: $tok" \
                  -H "Content-Type: application/json" \
                  -X GET "${uri}/api/service_catalogs?attributes=name,id&expand=resources"\
-                | jq -r ".resources[] | select(.name == \"${catalogName}\") | .id")
+                | /root/bin/jq -r ".resources[] | select(.name == \"${catalogName}\") | .id")
 
 if [ -z "${catalogID}" ]; then
     echo "Catalog '${catalogName}' not found" >&2
@@ -62,7 +62,7 @@ itemID=$(curl -s -H "X-Auth-Token: $tok" \
               -H "Content-Type: application/json" \
               -X GET \
               "${uri}/api/service_templates?attributes=service_template_catalog_id,id,name&expand=resources" \
-             | jq -r ".resources[] | select(.name == \"${itemName}\") | .id")
+             | /root/bin/jq -r ".resources[] | select(.name == \"${itemName}\") | .id")
 
 if [ -z "${itemID}" ]; then
     echo "Item '${itemName}' not found" >&2
