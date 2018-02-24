@@ -28,6 +28,7 @@
 - name: Execute script to create AWS infrastructure for 3 Tier Application
   script: wrapper.sh
   args:
+    chdir: ~/bin
     creates: ~/order_svc.log
 
 ...
