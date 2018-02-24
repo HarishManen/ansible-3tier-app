@@ -26,6 +26,8 @@
     dest: ~/credentials.rc
     mode: 0644
 - name: Execute order_svc.sh script to create AWS infrastructure for 3 Tier Application
-  command: echo "source ~/credentials.rc ; ~/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y"
+  shell: |
+    source ~/credentials.rc
+    ~/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y
 
 ...
