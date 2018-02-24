@@ -23,7 +23,7 @@
 - name: copy credentials file
   template:
     src: credentials.j2
-    dest: /root/credentials.rc
+    dest: /root/bin/credentials.rc
     mode: 0644
 - name: Execute script to create AWS infrastructure for 3 Tier Application
   script: wrapper.sh

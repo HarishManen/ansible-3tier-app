@@ -42,9 +42,9 @@ then
     exit 1
 fi
 
-uri=`grep uri credentials.rc |awk -F "=" '{print $2}'`
-username=`grep username credentials.rc |awk -F "=" '{print $2}'`
-password=`grep password credentials.rc |awk -F "=" '{print $2}'`
+uri=`grep uri ${ORIG}/credentials.rc |awk -F "=" '{print $2}'`
+username=`grep username ${ORIG}/credentials.rc |awk -F "=" '{print $2}'`
+password=`grep password ${ORIG}/credentials.rc |awk -F "=" '{print $2}'`
 
 get_token
 
