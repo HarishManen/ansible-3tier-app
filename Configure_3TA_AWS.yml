@@ -1,49 +1,36 @@
 ---
 
-- name: Deploy 3-tier apps on top of the OSP infrastructure
-  hosts: jumpbox
-  vars:
-    cloud_name: ospcloud
-#  become: yes
-  roles:
-    - {name: osp-facts, tags: osp-facts}
-
-# Setup database tier
 - name: Deploy PostgreSQL server
   become: true
   hosts: appdbs
-  gather_facts: false # remove later! speeds up testing
+  gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
     - {name: db-tier, tags: [db-tier, dbs, PostgreSQL]}
 
-# Setup application tier
 - name: Deploy application servers
   become: true
   hosts: apps
-  gather_facts: false # remove later! speeds up testing
+  gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
     - {name: app-tier, tags: [app-tier, apps, Tomcat]}
 
-# Setup load balancer tier
 - name: Deploy load balancer servers
   become: true
   hosts: frontends
-  gather_facts: false # remove later! speeds up testing
+  gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
     - {name: lb-tier, tags: [lb-tier, lbs, HAProxy]}
-
-- name: Check that a page returns a status 200 and fail if the word Ansible is not in the page contents.
   tasks:
     - uri:
-        url: http://frontend1.e327.example.opentlc.com
+        url: "http://{{ inventory_hostname }}"
         return_content: yes
       register: webpage
 
-    - name: Fail if Ansible is not in the page content
+    - name: Fail if the page content does not have 'Ansible has done its job'
       fail:
-      when: "'Ansible' not in webpage.content"
+      when: "'Ansible has done its job' not in webpage.content"
 
 ...
