@@ -21,13 +21,13 @@
       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
   register: instanceip
-- name: "Start instance {{ instanceip.server.name }} if it is shutdown"
+- name: Start instance "{{ instanceip.server.name }}" if it is shutdown
   os_server_action:
     cloud: "{{ cloud_name }}"
     action: start
     server: "{{ instanceip.server.name }}"
   when: instanceip.server is defined and instanceip.server.status == "SHUTOFF"
-- name: "Add floating IP to instance {{ instanceip.server.name }}"
+- name: Add floating IP to instance "{{ instanceip.server.name }}"
   os_floating_ip:
     cloud: "{{ cloud_name }}"
     state: present
@@ -38,11 +38,11 @@
     timeout: 180
   when: instanceip.server is defined
   register: instancefloatingip
-- name: Show instance public IP
+- name: Show the public IP of the instance
   debug:
     msg: "Instance {{ instanceip.server.name }} has public IP: {{ instancefloatingip.floating_ip.floating_ip_address }}"
   when: instancefloatingip.floating_ip is defined
-- name: "Wait for instance {{ instanceip.server.name }} to be available"
+- name: Wait for instance "{{ instanceip.server.name }}" to be available
   wait_for:
     host: "{{ instancefloatingip.floating_ip.floating_ip_address }}"
     port: 22

@@ -31,14 +31,22 @@
   roles:
     - {name: base-config, tags: base-config}
     - {name: lb-tier, tags: [lb-tier, lbs, HAProxy]}
+
+- name: Smoke test the 3 Tier application
+  hosts: jumpbox
+  gather_facts: false
   tasks:
-    - uri:
-        url: "http://{{ inventory_hostname }}"
+    - name: Check frontend(s) is responding on port 80
+      uri:
+        url: "http://{{ item }}"
         return_content: yes
       register: webpage
+      with_items:
+        - "{{ groups['frontends'] }}"
 
-    - name: Fail if the page content does not have 'Ansible has done its job'
+    - name: Fail if the page content does not have <Ansible has done its job>
       fail:
-      when: "'Ansible has done its job' not in webpage.content"
+      when: '"Ansible has done its job - Welcome to Tomcat" not in item.content'
+      with_items: "{{ webpage.results }}"
 
 ...
