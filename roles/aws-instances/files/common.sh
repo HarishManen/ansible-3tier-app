@@ -15,7 +15,7 @@ get_token() {
     token_info=$(curl -s --user $username:$password \
                       -X GET -H "Accept: application/json" \
                       $uri/api/auth\
-                     | jq -r '.auth_token + ";" + (.token_ttl|tostring)')
+                     | /root/bin/jq -r '.auth_token + ";" + (.token_ttl|tostring)')
 
     tok=${token_info%;*}
     tok_ttl=${token_info#*;}
@@ -37,7 +37,7 @@ get_my_user_id() {
          -H "Content-Type: application/json" \
          -X GET \
          "$uri/api/users?attributes=id,userid,name\&filter\[\]=userid='${username}'&expand=resources" \
-         | jq -r ".resources[] | select(.userid == \"${username}\") | .id"
+         | /root/bin/jq -r ".resources[] | select(.userid == \"${username}\") | .id"
 }
 
 json_escape () {
