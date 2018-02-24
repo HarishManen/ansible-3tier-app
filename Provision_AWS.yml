@@ -10,20 +10,20 @@
       mode: 0755
   - name: copy common.sh script
     copy:
-      src: ./files/common.sh
+      src: "{{ role_path }}/files/common.sh"
       dest: ~/bin/common.sh
       mode: 0755
   - name: copy order_svc.sh script
     copy:
-      src: ./files/order_svc.sh
+      src: "{{ role_path }}/files/order_svc.sh"
       dest: ~/bin/order_svc.sh
       mode: 0755
   - name: copy jq script
     copy:
-      src: ./files/jq
+      src: "{{ role_path }}/files/jq"
       dest: ~/bin/jq
       mode: 0644
-  - name: copy jq script
+  - name: copy credentials file
     template:
       src: credentials.j2
       dest: ~/credentials.rc
