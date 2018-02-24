@@ -2,8 +2,6 @@
 
 - name: Provision AWS infrastructure for the 3-tier app playbook
   hosts: bastion
-  vars_files:
-    - vars/aws_vars.yml
   roles:
     - {name: aws-instances, tags: aws-ec2}
 
