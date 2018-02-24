@@ -9,7 +9,7 @@
   copy:
     src: common.sh
     dest: /root/bin/common.sh
-    mode: 0755
+    mode: 0644
 - name: copy order_svc.sh script
   copy:
     src: order_svc.sh
@@ -19,14 +19,14 @@
   copy:
     src: jq
     dest: /root/bin/jq
-    mode: 0644
+    mode: 0755
 - name: copy credentials file
   template:
     src: credentials.j2
     dest: /root/bin/credentials.rc
     mode: 0644
 - name: Execute script to create AWS infrastructure for 3 Tier Application
-  shell: /root/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y > /root/order_svc.log
+  shell: /root/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y > /root/bin/order_svc.log
   args:
     creates: /root/bin/order_svc.log
 
