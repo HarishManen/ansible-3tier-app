@@ -26,9 +26,8 @@
     dest: /root/bin/credentials.rc
     mode: 0644
 - name: Execute script to create AWS infrastructure for 3 Tier Application
-  script: wrapper.sh
+  shell: /root/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y > /root/order_svc.log
   args:
-    chdir: /root/bin
-    creates: /root/order_svc.log
+    creates: /root/bin/order_svc.log
 
 ...
