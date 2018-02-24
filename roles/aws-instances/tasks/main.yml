@@ -25,7 +25,9 @@
     src: credentials.j2
     dest: ~/credentials.rc
     mode: 0644
+- name: Source credentials file
+  command: source ~/credentials.rc
 - name: Execute order_svc.sh script to create AWS infrastructure for 3 Tier Application
-  command: source ~/credentials.rc ; ~/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y
+  command: ~/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y
 
 ...
