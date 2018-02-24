@@ -1,15 +1,33 @@
 ---
 
-- name: Provision OSP infrastructure for the 3-tier app playbook
-  hosts: jumpbox
-#  gather_facts: false
-  vars_files:
-    - vars/osp_vars.yml
-  roles:
-    - {name: osp-network, tags: osp-nets}
-    - {name: osp-keypair, tags: osp-keys}
-    - {name: osp-securitygroup, tags: osp-sgs}
-    - {name: osp-flavor, tags: osp-flavors}
-    - {name: osp-instances, tags: osp-vms}
-
+- name: Provision AWS infrastructure for the 3-tier app playbook
+  hosts: bastion
+  tasks:
+  - name: Create bin directory
+    file:
+      path: ~/bin
+      state: directory
+      mode: 0755
+  - name: copy common.sh script
+    copy:
+      src: common.j2
+      dest: ~/bin/common.sh
+      mode: 0755
+  - name: copy order_svc.sh script
+    copy:
+      src: order_svc.j2
+      dest: ~/bin/order_svc.sh
+      mode: 0755
+  - name: copy jq script
+    copy:
+      src: jq.j2
+      dest: ~/bin/jq
+      mode: 0644
+  - name: copy jq script
+    template:
+      src: credentials.j2
+      dest: ~/credentials.rc
+      mode: 0644
+  - name: Execute order_svc.sh script to create AWS infrastructure for 3 Tier Application
+    command: echo "source ~/credentials.rc ; ~/bin/order_svc.sh -c 'OPENTLC Automation' -i 'Three Tier Application' -t 1 -y"
 ...
