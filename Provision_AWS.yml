@@ -10,17 +10,17 @@
       mode: 0755
   - name: copy common.sh script
     copy:
-      src: common.sh
+      src: ./files/common.sh
       dest: ~/bin/common.sh
       mode: 0755
   - name: copy order_svc.sh script
     copy:
-      src: order_svc.sh
+      src: ./files/order_svc.sh
       dest: ~/bin/order_svc.sh
       mode: 0755
   - name: copy jq script
     copy:
-      src: jq
+      src: ./files/jq
       dest: ~/bin/jq
       mode: 0644
   - name: copy jq script
