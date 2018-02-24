@@ -42,25 +42,9 @@ then
     exit 1
 fi
 
-if [ -z "$uri" ]
-then
-    echo -n "Enter CF URI: "
-    read uri
-fi
-
-if [ -z "$username" ]
-then
-    echo -n "Enter CF Username: "
-    read username
-fi
-
-if [ -z "$password" ]; then
-    echo -n "Enter CF Password: "
-    stty -echo
-    read password
-    stty echo
-    echo
-fi
+uri=`grep uri credentials.rc |awk -F "=" '{print $2}'`
+username=`grep username credentials.rc |awk -F "=" '{print $2}'`
+password=`grep password credentials.rc |awk -F "=" '{print $2}'`
 
 get_token
 
