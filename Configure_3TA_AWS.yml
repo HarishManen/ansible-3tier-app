@@ -10,7 +10,7 @@
 
 - name: Deploy application servers
   become: true
-  hosts: awspps
+  hosts: awsapps
   gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
@@ -25,7 +25,7 @@
     - {name: lb-tier, tags: [lb-tier, lbs, HAProxy]}
 
 - name: Smoke test the 3 Tier application
-  hosts: jumpbox
+  hosts: awsbastion
   gather_facts: false
   tasks:
     - name: Check frontend(s) is responding on port 80
