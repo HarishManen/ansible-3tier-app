@@ -2,7 +2,7 @@
 
 - name: Deploy PostgreSQL server
   become: true
-  hosts: awsappdbs
+  hosts: tag_AnsibleGroup_appdbs
   gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
@@ -10,7 +10,7 @@
 
 - name: Deploy application servers
   become: true
-  hosts: awsapps
+  hosts: tag_AnsibleGroup_apps
   gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
@@ -18,14 +18,14 @@
 
 - name: Deploy load balancer servers
   become: true
-  hosts: awsfrontends
+  hosts: tag_AnsibleGroup_frontends
   gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
     - {name: lb-tier, tags: [lb-tier, lbs, HAProxy]}
 
 - name: Smoke test the 3 Tier application
-  hosts: awsbastion
+  hosts: tag_AnsibleGroup_bastions
   gather_facts: false
   tasks:
     - name: Check frontend(s) is responding on port 80
