@@ -34,7 +34,7 @@
         return_content: yes
       register: webpage
       with_items:
-        - "{{ groups['frontends'] }}"
+        - "{{ groups['tag_AnsibleGroup_frontends'] }}"
 
     - name: Fail if the page content does not have <Ansible has done its job>
       fail:
