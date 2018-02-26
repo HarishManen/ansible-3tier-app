@@ -36,10 +36,11 @@ The OpenStack environment is behind a firewall and as such the inventory is comp
 ### Provision_AWS.yml
 * This playbook takes all its variables from aws_vars.yml file and creates all the AWS infrastructure needed by the 3 Tier Application by requesting an Opentlc predefined service called PROD_THREE_TIER_APP.
 * The playbook is using Ansible Vault to provide secure credentials for authenticating to Opentlc to request the service.
+* The playbook wait 10 min for the environment to be provisioned.
 
 ### Configure_3TA_AWS.yml
 * This playbook uses Ansible Tower AWS EC2 dynamic inventory feature to provision 3 Tier Application:
   * HAProxy on the frontend server to load balance between application servers.
   * Tomcat on the application servers.
   * PostgreSQL on the database server.
-* The AWS EC2 dynamic inventory creates groups in the format tag_AnsibleGroup_<group>, where group is replaced by the actual groups defined in the service during provisioning: apps, appdbs, frontends, bastions 
+* The AWS EC2 dynamic inventory creates groups in the format tag_AnsibleGroup_<group>, where group is replaced by the actual groups defined in the service during provisioning: apps, appdbs, frontends, bastions
