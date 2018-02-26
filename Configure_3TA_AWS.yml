@@ -20,11 +20,9 @@
   become: true
   hosts: tag_AnsibleGroup_frontends
   gather_facts: false
-  vars:
-    haproxy_group: tag_AnsibleGroup_apps
   roles:
     - {name: base-config, tags: base-config}
-    - {name: lb-tier, tags: [lb-tier, lbs, HAProxy]}
+    - {name: lb-tier, haproxy_group: tag_AnsibleGroup_apps, tags: [lb-tier, lbs, HAProxy]}
 
 - name: Smoke test the 3 Tier application
   hosts: tag_AnsibleGroup_bastions
