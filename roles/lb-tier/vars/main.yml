@@ -4,3 +4,4 @@ packages:
   - httpie
   - haproxy
 haproxy_cfg: /etc/haproxy/haproxy.cfg
+haproxy_group: apps
