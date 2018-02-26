@@ -12,8 +12,6 @@
   become: true
   hosts: tag_AnsibleGroup_apps
   gather_facts: false
-  vars:
-    haproxy_group: tag_AnsibleGroup_apps
   roles:
     - {name: base-config, tags: base-config}
     - {name: app-tier, tags: [app-tier, apps, Tomcat]}
@@ -22,6 +20,8 @@
   become: true
   hosts: tag_AnsibleGroup_frontends
   gather_facts: false
+  vars:
+    haproxy_group: tag_AnsibleGroup_apps
   roles:
     - {name: base-config, tags: base-config}
     - {name: lb-tier, tags: [lb-tier, lbs, HAProxy]}
